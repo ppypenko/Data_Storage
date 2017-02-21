@@ -1,5 +1,6 @@
 package team.afalse.data_storage;
 
+
 /**
  * Created by Michael on 2/21/2017.
  */
@@ -12,6 +13,8 @@ public class Task {
     private String description;
     private boolean completed;
     private int id;
+    private String completionDate;
+    private boolean isCountingDown;
 
     public String GetTitle(){
         return title;
@@ -51,5 +54,21 @@ public class Task {
 
     public void SetId(int p_id){
         id = p_id;
+    }
+
+    public String GetCompletionDate(){
+        return completionDate;
+    }
+
+    public void SetCompletionDate(String p_completionDate) {
+        completionDate = p_completionDate;
+    }
+
+    public boolean GetIsCountingDown(){
+        return isCountingDown;
+    }
+
+    public void SetIsCountingDown(boolean p_countingDown){
+        isCountingDown = p_countingDown;
     }
 }
