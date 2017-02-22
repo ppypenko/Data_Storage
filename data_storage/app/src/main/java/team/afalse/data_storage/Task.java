@@ -15,6 +15,26 @@ public class Task {
     private int id;
     private String completionDate;
     private boolean isCountingDown;
+    public Task(){}
+
+    public Task(int id, String title, String description, String completionDate, float time, boolean completed, boolean isCountingDown){
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.completionDate = completionDate;
+        this.time = time;
+        this.completed = completed;
+        this.isCountingDown = isCountingDown;
+    }
+
+    public Task( String title, String description, String completionDate, float time, boolean completed, boolean isCountingDown){
+        this.title = title;
+        this.description = description;
+        this.completionDate = completionDate;
+        this.time = time;
+        this.completed = completed;
+        this.isCountingDown = isCountingDown;
+    }
 
     public String GetTitle(){
         return title;

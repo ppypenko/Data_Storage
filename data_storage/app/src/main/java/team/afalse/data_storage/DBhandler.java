@@ -16,14 +16,17 @@ import java.util.List;
 public class DBhandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    // Database Name
+
     private static final String DATABASE_NAME = "Tasks";
-    // Contacts table name
+
     private static final String TABLE_TASKS = "TaskTable";
-    // Shops Table Columns names
+
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_TIME = "time";
+    private static final String KEY_COMPLETED = "completed";
+    private static final String KEY_COUNT_DOWN = "count down";
+    private static final String KEY_COMPLETION_DATE = "time";
     private static final String KEY_DESCRIPTION = "description";
 
     public DBhandler(Context context) {
@@ -31,97 +34,102 @@ public class DBhandler extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_SHOPS + "("
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + DATABASE_NAME + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT,"
-                + KEY_DESCRIPTION + " TEXT" + KEY_TIME + ")";
+                + KEY_DESCRIPTION + " TEXT, " + KEY_TIME + " TEXT, "
+                + KEY_COMPLETED + " NUMBERIC, " + KEY_COUNT_DOWN + " NUMERIC, "
+                + KEY_COMPLETION_DATE + " TEXT )";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-// Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPS);
-// Creating tables again
+        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_NAME);
         onCreate(db);
     }
-    // Adding new shop
-    public void addShop(Shop shop) {
+    public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, shop.getName()); // Shop Name
-        values.put(KEY_SH_ADDR, shop.getAddress()); // Shop Phone Number
+        values.put(KEY_TITLE, task.GetTitle());
+        values.put(KEY_TIME, task.GetTime());
+        values.put(KEY_COMPLETED, task.GetCompleted());
+        values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
+        values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
+        values.put(KEY_DESCRIPTION, task.GetDescription());
 
-// Inserting Row
-        db.insert(TABLE_SHOPS, null, values);
-        db.close(); // Closing database connection
+        db.insert(DATABASE_NAME, null, values);
+        db.close();
     }
-    // Getting one shop
-    public Shop getShop(int id) {
+
+    public Task getTask(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_SHOPS, new String[]{KEY_ID,
-                        KEY_NAME, KEY_SH_ADDR}, KEY_ID + "=?",
+        Cursor cursor = db.query(DATABASE_NAME, new String[]{KEY_ID,
+                        KEY_TITLE, KEY_DESCRIPTION, KEY_COMPLETION_DATE,
+                        KEY_TIME, KEY_COMPLETED, KEY_COUNT_DOWN, }, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
+        if (cursor != null){
             cursor.moveToFirst();
+        }
 
-        Shop contact = new Shop(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
-// return shop
+        Task contact = new Task(Integer.parseInt(cursor.getString(0)),
+                cursor.getString(1), cursor.getString(2), cursor.getString(3),
+                Float.parseFloat(cursor.getString(4)), Boolean.parseBoolean(cursor.getString(5)),
+                Boolean.parseBoolean(cursor.getString(6)));
+
         return contact;
     }
-    // Getting All Shops
-    public List<Shop> getAllShops() {
-        List<Shop> shopList = new ArrayList<Shop>();
-// Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_SHOPS;
+
+    public List<Task> getAllTasks() {
+        List<Task> taskList = new ArrayList<Task>();
+
+        String selectQuery = "SELECT * FROM " + DATABASE_NAME;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-// looping through all rows and adding to list
+        //cursor.getString(1), cursor.getString(2), cursor.getString(3),
+        Float.parseFloat(cursor.getString(4)), Boolean.parseBoolean(cursor.getString(5)),
+                Boolean.parseBoolean(cursor.getString(6))
         if (cursor.moveToFirst()) {
             do {
-                Shop shop = new Shop();
-                shop.setId(Integer.parseInt(cursor.getString(0)));
-                shop.setName(cursor.getString(1));
-                shop.setAddress(cursor.getString(2));
-// Adding contact to list
-                shopList.add(shop);
+                Task task = new Task();
+                task.SetId(Integer.parseInt(cursor.getString(0)));
+                task.SetCompleted();
+
+                taskList.add(task);
             } while (cursor.moveToNext());
         }
-
-// return contact list
-        return shopList;
+        return taskList;
     }
-    // Getting shops Count
-    public int getShopsCount() {
-        String countQuery = "SELECT * FROM " + TABLE_SHOPS;
+
+    public int getTasksCount() {
+        String countQuery = "SELECT * FROM " + DATABASE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
-
-// return count
         return cursor.getCount();
     }
-    // Updating a shop
+
     public int updateTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, shop.getName());
-        values.put(KEY_SH_ADDR, shop.getAddress());
+        values.put(KEY_TITLE, task.GetTitle());
+        values.put(KEY_TIME, task.GetTime());
+        values.put(KEY_COMPLETED, task.GetCompleted());
+        values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
+        values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
+        values.put(KEY_DESCRIPTION, task.GetDescription());
 
-// updating row
-        return db.update(TABLE_SHOPS, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(shop.getId())});
+        return db.update(DATABASE_NAME, values, KEY_ID + " = ?",
+                new String[]{String.valueOf(task.GetId())});
     }
 
-    // Deleting a shop
-    public void deleteShop(Task task) {
+    public void deleteTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_SHOPS, KEY_ID + " = ?",
-                new String[] { String.valueOf(task.getId()) });
+        db.delete(DATABASE_NAME, KEY_ID + " = ?",
+                new String[] { String.valueOf(task.GetId()) });
         db.close();
     }
 }
