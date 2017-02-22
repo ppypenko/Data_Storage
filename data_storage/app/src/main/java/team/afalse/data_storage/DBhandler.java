@@ -51,11 +51,11 @@ public class DBhandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, task.GetTitle());
+        values.put(KEY_DESCRIPTION, task.GetDescription());
         values.put(KEY_TIME, task.GetTime());
         values.put(KEY_COMPLETED, task.GetCompleted());
         values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
         values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
-        values.put(KEY_DESCRIPTION, task.GetDescription());
 
         db.insert(DATABASE_NAME, null, values);
         db.close();
@@ -65,17 +65,17 @@ public class DBhandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(DATABASE_NAME, new String[]{KEY_ID,
-                        KEY_TITLE, KEY_DESCRIPTION, KEY_COMPLETION_DATE,
-                        KEY_TIME, KEY_COMPLETED, KEY_COUNT_DOWN, }, KEY_ID + "=?",
+                        KEY_TITLE, KEY_DESCRIPTION, KEY_TIME,
+                        KEY_COMPLETED, KEY_COUNT_DOWN, KEY_COMPLETION_DATE }, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null){
             cursor.moveToFirst();
         }
 
         Task contact = new Task(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3),
-                Float.parseFloat(cursor.getString(4)), Boolean.parseBoolean(cursor.getString(5)),
-                Boolean.parseBoolean(cursor.getString(6)));
+                cursor.getString(1), cursor.getString(2), cursor.getString(6),
+                Float.parseFloat(cursor.getString(3)), Boolean.parseBoolean(cursor.getString(4)),
+                Boolean.parseBoolean(cursor.getString(5)));
 
         return contact;
     }
@@ -95,7 +95,12 @@ public class DBhandler extends SQLiteOpenHelper {
             do {
                 Task task = new Task();
                 task.SetId(Integer.parseInt(cursor.getString(0)));
-                task.SetCompleted();
+                task.SetTitle(cursor.getString(1));
+                task.SetDescription(cursor.getString(2));
+                task.SetTime(Float.parseFloat(cursor.getString(3)));
+                task.SetCompleted(Boolean.parseBoolean(cursor.getString(4)));
+                task.SetIsCountingDown(Boolean.parseBoolean(cursor.getString(5)));
+                task.SetCompletionDate(cursor.getString(6));
 
                 taskList.add(task);
             } while (cursor.moveToNext());
