@@ -88,9 +88,6 @@ public class DBhandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        //cursor.getString(1), cursor.getString(2), cursor.getString(3),
-        Float.parseFloat(cursor.getString(4)), Boolean.parseBoolean(cursor.getString(5)),
-                Boolean.parseBoolean(cursor.getString(6))
         if (cursor.moveToFirst()) {
             do {
                 Task task = new Task();
