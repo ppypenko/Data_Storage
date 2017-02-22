@@ -35,7 +35,7 @@ public class DBhandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + DATABASE_NAME + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT,"
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_TITLE + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT, " + KEY_TIME + " TEXT, "
                 + KEY_COMPLETED + " NUMERIC, " + KEY_COUNT_DOWN + " NUMERIC, "
                 + KEY_COMPLETION_DATE + " TEXT )";
