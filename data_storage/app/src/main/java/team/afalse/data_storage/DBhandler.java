@@ -26,7 +26,7 @@ public class DBhandler extends SQLiteOpenHelper {
     private static final String KEY_TIME = "time";
     private static final String KEY_COMPLETED = "completed";
     private static final String KEY_COUNT_DOWN = "count down";
-    private static final String KEY_COMPLETION_DATE = "time";
+    private static final String KEY_COMPLETION_DATE = "completion date";
     private static final String KEY_DESCRIPTION = "description";
 
     public DBhandler(Context context) {
@@ -37,7 +37,7 @@ public class DBhandler extends SQLiteOpenHelper {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + DATABASE_NAME + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT, " + KEY_TIME + " TEXT, "
-                + KEY_COMPLETED + " NUMBERIC, " + KEY_COUNT_DOWN + " NUMERIC, "
+                + KEY_COMPLETED + " NUMERIC, " + KEY_COUNT_DOWN + " NUMERIC, "
                 + KEY_COMPLETION_DATE + " TEXT )";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
