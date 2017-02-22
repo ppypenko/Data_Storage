@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -28,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
         taskList.setAdapter(taskArrayAdapter);
     }
 
-    private void alarm(){
-        ToneGenerator tone = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
-        tone.startTone(ToneGenerator.TONE_PROP_BEEP, 200);
+    public void showNewTaskMenu(View view) {
+
     }
+
+
 }

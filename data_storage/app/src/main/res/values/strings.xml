@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">data_storage</string>
+    <string name="app_name">Task Planner</string>
+    <string name="save">Save Task</string>
 </resources>
