@@ -30,6 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void alarm(){
         ToneGenerator tone = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
-        tone.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 200);
+        tone.startTone(ToneGenerator.TONE_PROP_BEEP, 200);
     }
 }
