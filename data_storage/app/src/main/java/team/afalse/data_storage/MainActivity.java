@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,8 +32,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showNewTaskMenu(View view) {
+        AnimHelper.animate(this, findViewById(R.id.hiddenEditMenu));
+    }
+
+    public void saveTask(View view) {
+        String id = ((EditText)findViewById(R.id.taskId)).getText().toString();
+        if (id.isEmpty()) {
+            makeNewTask();
+        } else {
+            editTask();
+        }
+    }
+
+    private void makeNewTask() {
 
     }
 
+    private void editTask() {
+        
+    }
 
 }

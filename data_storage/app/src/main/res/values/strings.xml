@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Task Planner</string>
     <string name="save">Save Task</string>
+    <string name="taskName">Task Name</string>
 </resources>
