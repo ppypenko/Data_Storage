@@ -25,8 +25,8 @@ public class DBhandler extends SQLiteOpenHelper {
     private static final String KEY_TITLE = "title";
     private static final String KEY_TIME = "time";
     private static final String KEY_COMPLETED = "completed";
-    private static final String KEY_COUNT_DOWN = "count down";
-    private static final String KEY_COMPLETION_DATE = "completion date";
+    private static final String KEY_COUNT_DOWN = "count_down";
+    private static final String KEY_COMPLETION_DATE = "completion_date";
     private static final String KEY_DESCRIPTION = "description";
 
     public DBhandler(Context context) {
@@ -34,18 +34,28 @@ public class DBhandler extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + DATABASE_NAME + "("
+        init();
+    }
+
+    public void init() {
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_TITLE + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT, " + KEY_TIME + " TEXT, "
                 + KEY_COMPLETED + " NUMERIC, " + KEY_COUNT_DOWN + " NUMERIC, "
                 + KEY_COMPLETION_DATE + " TEXT )";
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        getWritableDatabase().execSQL(CREATE_CONTACTS_TABLE);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
         onCreate(db);
     }
+
+    public void drop() {
+        getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
+    }
+
     public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -57,14 +67,14 @@ public class DBhandler extends SQLiteOpenHelper {
         values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
         values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
 
-        db.insert(DATABASE_NAME, null, values);
+        db.insertOrThrow(TABLE_TASKS, null, values);
         db.close();
     }
 
     public Task getTask(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(DATABASE_NAME, new String[]{KEY_ID,
+        Cursor cursor = db.query(TABLE_TASKS, new String[]{KEY_ID,
                         KEY_TITLE, KEY_DESCRIPTION, KEY_TIME,
                         KEY_COMPLETED, KEY_COUNT_DOWN, KEY_COMPLETION_DATE }, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
@@ -83,12 +93,14 @@ public class DBhandler extends SQLiteOpenHelper {
     public List<Task> getAllTasks() {
         List<Task> taskList = new ArrayList<Task>();
 
-        String selectQuery = "SELECT * FROM " + DATABASE_NAME;
+        String selectQuery = "SELECT * FROM " + TABLE_TASKS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) {
+        boolean moveToFirst = cursor.moveToFirst();
+        System.out.println(moveToFirst);
+        if (moveToFirst) {
             do {
                 Task task = new Task();
                 task.SetId(Integer.parseInt(cursor.getString(0)));
@@ -106,7 +118,7 @@ public class DBhandler extends SQLiteOpenHelper {
     }
 
     public int getTasksCount() {
-        String countQuery = "SELECT * FROM " + DATABASE_NAME;
+        String countQuery = "SELECT * FROM " + TABLE_TASKS;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
