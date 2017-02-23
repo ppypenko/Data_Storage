@@ -34,7 +34,7 @@ public class DBhandler extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        init();
+
     }
 
     public void init() {
