@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             editTask();
         }
+        showNewTaskMenu(view);
     }
 
     private void makeNewTask() {

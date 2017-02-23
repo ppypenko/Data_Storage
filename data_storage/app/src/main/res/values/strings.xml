@@ -3,4 +3,5 @@
     <string name="save">Save Task</string>
     <string name="taskName">Task Name</string>
     <string name="allTasks">Current Tasks</string>
+    <string name="countUp">Timer Counts Up</string>
 </resources>

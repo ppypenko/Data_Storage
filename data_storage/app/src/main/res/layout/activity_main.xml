@@ -50,7 +50,7 @@
     <LinearLayout android:id="@+id/hiddenEditMenu"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:visibility="gone"
         android:background="@color/backgroundColor">
         <EditText android:id="@+id/taskId"
@@ -64,6 +64,11 @@
         <EditText android:id="@+id/taskName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <CheckBox android:id="@+id/cb_countingUp"
+            android:text="@string/countUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
         <Button android:id="@+id/saveTask"
             android:text="@string/save"
             android:layout_gravity="center_horizontal"
