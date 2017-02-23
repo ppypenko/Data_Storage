@@ -23,7 +23,9 @@ public class DBhandler extends SQLiteOpenHelper {
 
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
-    private static final String KEY_TIME = "time";
+    private static final String KEY_HOURS = "hours";
+    private static final String KEY_MINUTES = "minutes";
+    private static final String KEY_SECONDS = "seconds";
     private static final String KEY_COMPLETED = "completed";
     private static final String KEY_COUNT_DOWN = "count_down";
     private static final String KEY_COMPLETION_DATE = "completion_date";
@@ -40,7 +42,8 @@ public class DBhandler extends SQLiteOpenHelper {
     public void init() {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_TITLE + " TEXT,"
-                + KEY_DESCRIPTION + " TEXT, " + KEY_TIME + " TEXT, "
+                + KEY_DESCRIPTION + " TEXT, " + KEY_HOURS + " INTEGER, "
+                + KEY_MINUTES + " INTEGER, " + KEY_SECONDS + " INTEGER, "
                 + KEY_COMPLETED + " NUMERIC, " + KEY_COUNT_DOWN + " NUMERIC, "
                 + KEY_COMPLETION_DATE + " TEXT )";
         getWritableDatabase().execSQL(CREATE_CONTACTS_TABLE);
@@ -62,7 +65,9 @@ public class DBhandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, task.GetTitle());
         values.put(KEY_DESCRIPTION, task.GetDescription());
-        values.put(KEY_TIME, task.GetTime());
+        values.put(KEY_HOURS, task.GetTime()[0]);
+        values.put(KEY_MINUTES, task.GetTime()[1]);
+        values.put(KEY_SECONDS, task.GetTime()[2]);
         values.put(KEY_COMPLETED, task.GetCompleted());
         values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
         values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
@@ -75,17 +80,17 @@ public class DBhandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_TASKS, new String[]{KEY_ID,
-                        KEY_TITLE, KEY_DESCRIPTION, KEY_TIME,
+                        KEY_TITLE, KEY_DESCRIPTION, KEY_HOURS, KEY_MINUTES, KEY_SECONDS,
                         KEY_COMPLETED, KEY_COUNT_DOWN, KEY_COMPLETION_DATE }, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null){
             cursor.moveToFirst();
         }
-
+        int[] time = new int[]{Integer.parseInt(cursor.getString(3)), Integer.parseInt(cursor.getString(4)), Integer.parseInt(cursor.getString(5))};
         Task contact = new Task(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(6),
-                Float.parseFloat(cursor.getString(3)), Boolean.parseBoolean(cursor.getString(4)),
-                Boolean.parseBoolean(cursor.getString(5)));
+                cursor.getString(1), cursor.getString(2), cursor.getString(8),
+                time, Boolean.parseBoolean(cursor.getString(6)),
+                Boolean.parseBoolean(cursor.getString(7)));
 
         return contact;
     }
@@ -99,17 +104,21 @@ public class DBhandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         boolean moveToFirst = cursor.moveToFirst();
-        System.out.println(moveToFirst);
+
         if (moveToFirst) {
             do {
+                int hours = Integer.parseInt(cursor.getString(3));
+                int minutes = Integer.parseInt(cursor.getString(4));
+                int seconds = Integer.parseInt(cursor.getString(5));
+                int[] time = new int[]{hours, minutes, seconds};
                 Task task = new Task();
                 task.SetId(Integer.parseInt(cursor.getString(0)));
                 task.SetTitle(cursor.getString(1));
                 task.SetDescription(cursor.getString(2));
-                task.SetTime(Float.parseFloat(cursor.getString(3)));
-                task.SetCompleted(Boolean.parseBoolean(cursor.getString(4)));
-                task.SetIsCountingDown(Boolean.parseBoolean(cursor.getString(5)));
-                task.SetCompletionDate(cursor.getString(6));
+                task.SetTime(time);
+                task.SetCompleted(Boolean.parseBoolean(cursor.getString(6)));
+                task.SetIsCountingDown(Boolean.parseBoolean(cursor.getString(7)));
+                task.SetCompletionDate(cursor.getString(8));
 
                 taskList.add(task);
             } while (cursor.moveToNext());
@@ -130,7 +139,9 @@ public class DBhandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, task.GetTitle());
-        values.put(KEY_TIME, task.GetTime());
+        values.put(KEY_HOURS, task.GetTime()[0]);
+        values.put(KEY_MINUTES, task.GetTime()[1]);
+        values.put(KEY_SECONDS, task.GetTime()[2]);
         values.put(KEY_COMPLETED, task.GetCompleted());
         values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
         values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
