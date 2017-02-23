@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         db = new DBhandler(this);
         db.init();
-        AlarmHelper.getInstance().start();
         taskList = (ListView)findViewById(R.id.allTasks);
         fillTask();
     }
