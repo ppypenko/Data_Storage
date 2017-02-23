@@ -9,7 +9,8 @@ public class Task {
     // title time description completed id
 
     private String title;
-    private float time;
+    // 0 is hours, 1 is minutes, 2 is seconds
+    private int[] time = new int[3];
     private String description;
     private boolean completed;
     private int id;
@@ -17,7 +18,7 @@ public class Task {
     private boolean isCountingDown;
     public Task(){}
 
-    public Task(int id, String title, String description, String completionDate, float time, boolean completed, boolean isCountingDown){
+    public Task(int id, String title, String description, String completionDate, int[] time, boolean completed, boolean isCountingDown){
         this.id = id;
         this.title = title;
         this.description = description;
@@ -27,7 +28,7 @@ public class Task {
         this.isCountingDown = isCountingDown;
     }
 
-    public Task( String title, String description, String completionDate, float time, boolean completed, boolean isCountingDown){
+    public Task( String title, String description, String completionDate, int[] time, boolean completed, boolean isCountingDown){
         this.title = title;
         this.description = description;
         this.completionDate = completionDate;
@@ -44,11 +45,11 @@ public class Task {
         title = p_title;
     }
 
-    public float GetTime() {
+    public int[] GetTime() {
         return time;
     }
 
-    public void SetTime(float p_time){
+    public void SetTime(int[] p_time){
         time = p_time;
     }
 
