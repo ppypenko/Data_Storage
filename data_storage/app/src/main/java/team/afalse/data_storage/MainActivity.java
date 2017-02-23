@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         String name = getEditTextString(R.id.taskName);
         String description = "";
         String completionDate = "";
-        float time = Float.MAX_EXPONENT;
+        int[] time = new int[]{0};
         boolean completed = false;
         boolean isCountingDown = true;
         Task t = new Task(name, description, completionDate, time, completed, isCountingDown);
