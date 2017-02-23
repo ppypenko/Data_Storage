@@ -10,8 +10,66 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="team.afalse.data_storage.MainActivity">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:textSize="28sp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/allTasks"/>
+
+
+        <ListView android:id="@+id/allTasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16sp"
+            android:onClick="showNewTaskMenu"
+            android:src="@drawable/ic_plus_white_48dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/hiddenEditMenu"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/backgroundColor">
+        <EditText android:id="@+id/taskId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
+            android:text="@string/taskName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText android:id="@+id/taskName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button android:id="@+id/saveTask"
+            android:text="@string/save"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveTask"/>
+    </LinearLayout>
+
 </RelativeLayout>

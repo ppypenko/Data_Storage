@@ -91,4 +91,9 @@ public class Task {
     public void SetIsCountingDown(boolean p_countingDown){
         isCountingDown = p_countingDown;
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
