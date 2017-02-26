@@ -64,6 +64,21 @@
         <EditText android:id="@+id/taskName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <TextView
+            android:text="Task Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText android:id="@+id/taskDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="Task Date to Complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText android:id="@+id/taskCompletion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"/>
         <Button android:id="@+id/saveTask"
             android:text="@string/save"
             android:layout_gravity="center_horizontal"

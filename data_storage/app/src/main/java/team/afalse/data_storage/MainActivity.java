@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void makeNewTask() {
         String name = getEditTextString(R.id.taskName);
-        String description = "";
+        String description = getEditTextString(R.id.taskDescription);
         String completionDate = "";
         int[] time = new int[]{0};
         boolean completed = false;
@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void editTask() {
-
+        String name = getEditTextString(R.id.taskName);
+        String description = getEditTextString(R.id.taskDescription);
     }
 
     private String getEditTextString(int id) {
