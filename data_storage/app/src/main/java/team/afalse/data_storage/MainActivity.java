@@ -2,19 +2,22 @@ package team.afalse.data_storage;
 
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private DBhandler db;
     private ListView taskList;
@@ -27,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         db = new DBhandler(this);
         db.init();
         taskList = (ListView)findViewById(R.id.allTasks);
+        ((FloatingActionButton)findViewById(R.id.menu_button)).setOnLongClickListener(this);
+        EditText e1 = (EditText)findViewById(R.id.minutes);
+        e1.setFilters(new InputFilter[]{new NumberFilter(0, 59)});
+        EditText e2 = (EditText)findViewById(R.id.seconds);
+        e2.setFilters(new InputFilter[]{new NumberFilter(0, 59)});
         fillTask();
     }
 
@@ -49,12 +57,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             editTask();
         }
+        showNewTaskMenu(view);
     }
 
     private void makeNewTask() {
         String name = getEditTextString(R.id.taskName);
         String description = getEditTextString(R.id.taskDescription);
-        String completionDate = "";
+        String completionDate = getEditTextString(R.id.taskCompletionDate);
         int[] time = new int[]{0};
         boolean completed = false;
         boolean isCountingDown = true;
@@ -65,12 +74,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void editTask() {
+        int id = Integer.parseInt(getEditTextString(R.id.taskId));
         String name = getEditTextString(R.id.taskName);
         String description = getEditTextString(R.id.taskDescription);
+        String completionDate = getEditTextString(R.id.taskCompletionDate);
     }
 
     private String getEditTextString(int id) {
         return ((EditText)findViewById(id)).getText().toString();
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        AnimHelper.animate(this, findViewById(R.id.debugMenu));
+        return false;
+    }
+
+    public void onDebugClick(View v) {
+        switch (v.getId()) {
+            case R.id.dropDatabase:
+                db.drop();
+                db.init();
+                break;
+            case R.id.testAlarm:
+                AlarmHelper.getInstance().start();
+                break;
+        }
+    }
 }
