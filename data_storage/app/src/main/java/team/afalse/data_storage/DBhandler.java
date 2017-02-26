@@ -107,18 +107,18 @@ public class DBhandler extends SQLiteOpenHelper {
 
         if (moveToFirst) {
             do {
-                int hours = Integer.parseInt(cursor.getString(3));
-                int minutes = Integer.parseInt(cursor.getString(4));
-                int seconds = Integer.parseInt(cursor.getString(5));
+                int hours = (int)Double.parseDouble(cursor.getString(3));
+                int minutes = (int)Double.parseDouble(cursor.getString(4));
+                int seconds = (int)Double.parseDouble(cursor.getString(5));
                 int[] time = new int[]{hours, minutes, seconds};
                 Task task = new Task();
                 task.SetId(Integer.parseInt(cursor.getString(0)));
                 task.SetTitle(cursor.getString(1));
                 task.SetDescription(cursor.getString(2));
                 task.SetTime(time);
-                task.SetCompleted(Boolean.parseBoolean(cursor.getString(6)));
-                task.SetIsCountingDown(Boolean.parseBoolean(cursor.getString(7)));
-                task.SetCompletionDate(cursor.getString(8));
+                task.SetCompleted(Boolean.parseBoolean(cursor.getString(4)));
+                task.SetIsCountingDown(Boolean.parseBoolean(cursor.getString(5)));
+                task.SetCompletionDate(cursor.getString(6));
 
                 taskList.add(task);
             } while (cursor.moveToNext());

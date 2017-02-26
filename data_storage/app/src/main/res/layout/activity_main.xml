@@ -37,7 +37,7 @@
         android:layout_alignParentRight="true"
         android:orientation="horizontal">
 
-        <android.support.design.widget.FloatingActionButton
+        <android.support.design.widget.FloatingActionButton android:id="@+id/menu_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
@@ -69,12 +69,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Spinner android:id="@+id/monthSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
         <Button android:id="@+id/saveTask"
             android:text="@string/save"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="saveTask"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/debugMenu"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/backgroundColor">
+        <Button android:id="@+id/testAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test Alarm"
+            android:onClick="onDebugClick" />
+        <Button android:id="@+id/dropDatabase"
+            android:text="Drop Database"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onDebugClick"/>
     </LinearLayout>
 
 </RelativeLayout>

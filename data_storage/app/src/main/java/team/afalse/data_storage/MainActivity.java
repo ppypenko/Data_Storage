@@ -2,19 +2,21 @@ package team.afalse.data_storage;
 
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private DBhandler db;
     private ListView taskList;
@@ -27,7 +29,25 @@ public class MainActivity extends AppCompatActivity {
         db = new DBhandler(this);
         db.init();
         taskList = (ListView)findViewById(R.id.allTasks);
+        ((FloatingActionButton)findViewById(R.id.menu_button)).setOnLongClickListener(this);
         fillTask();
+        setupSpinners();
+    }
+
+    private void setupSpinners() {
+        setupMonthSpinner();
+    }
+
+    private void setupMonthSpinner() {
+        Month[] allMonths = Month.values();
+        ArrayList<Month> months = new ArrayList<>();
+        for (int i = 0; i < allMonths.length; i++) {
+            months.add(allMonths[i]);
+        }
+        ArrayAdapter<Month> monthArrayAdapter = new ArrayAdapter<Month>(
+                this, android.R.layout.simple_spinner_dropdown_item, months
+        );
+        ((Spinner)findViewById(R.id.monthSpinner)).setAdapter(monthArrayAdapter);
     }
 
     private void fillTask() {
@@ -73,4 +93,21 @@ public class MainActivity extends AppCompatActivity {
         return ((EditText)findViewById(id)).getText().toString();
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        AnimHelper.animate(this, findViewById(R.id.debugMenu));
+        return false;
+    }
+
+    public void onDebugClick(View v) {
+        switch (v.getId()) {
+            case R.id.dropDatabase:
+                db.drop();
+                db.init();
+                break;
+            case R.id.testAlarm:
+                AlarmHelper.getInstance().start();
+                break;
+        }
+    }
 }
