@@ -5,6 +5,7 @@ import android.media.ToneGenerator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity
         taskList.setOnItemClickListener(this);
         ((FloatingActionButton)findViewById(R.id.menu_button)).setOnLongClickListener(this);
         ((CheckBox)findViewById(R.id.cb_countingUp)).setOnCheckedChangeListener(this);
+        EditText e1 = (EditText)findViewById(R.id.minutes);
+        e1.setFilters(new InputFilter[]{new NumberFilter(0, 59)});
+        EditText e2 = (EditText)findViewById(R.id.seconds);
+        e2.setFilters(new InputFilter[]{new NumberFilter(0, 59)});
         fillTask();
     }
 
@@ -86,8 +91,8 @@ public class MainActivity extends AppCompatActivity
 
     private void makeNewTask() {
         String name = getEditTextString(R.id.taskName);
-        String description = "";
-        String completionDate = "";
+        String description = getEditTextString(R.id.taskDescription);
+        String completionDate = getEditTextString(R.id.taskCompletionDate);
         int[] time = new int[]{0};
         boolean completed = false;
         boolean isCountingDown = true;
@@ -97,6 +102,15 @@ public class MainActivity extends AppCompatActivity
         taskArrayAdapter.notifyDataSetChanged();
     }
 
+//<<<<<<< HEAD
+//=======
+//    private void editTask() {
+//        int id = Integer.parseInt(getEditTextString(R.id.taskId));
+//        String name = getEditTextString(R.id.taskName);
+//        String description = getEditTextString(R.id.taskDescription);
+//        String completionDate = getEditTextString(R.id.taskCompletionDate);
+//    }
+//>>>>>>> 0d837537252d2d076fddcab548bb4a248c85dc58
 
     private String getEditTextString(int id) {
         return ((EditText)findViewById(id)).getText().toString();
