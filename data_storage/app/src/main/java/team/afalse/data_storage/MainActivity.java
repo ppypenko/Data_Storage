@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -16,7 +18,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
 
     private DBhandler db;
     private ListView taskList;
@@ -30,24 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         db.init();
         taskList = (ListView)findViewById(R.id.allTasks);
         ((FloatingActionButton)findViewById(R.id.menu_button)).setOnLongClickListener(this);
+        ((CheckBox)findViewById(R.id.cb_countingUp)).setOnCheckedChangeListener(this);
         fillTask();
-        setupSpinners();
-    }
-
-    private void setupSpinners() {
-        setupMonthSpinner();
-    }
-
-    private void setupMonthSpinner() {
-        Month[] allMonths = Month.values();
-        ArrayList<Month> months = new ArrayList<>();
-        for (int i = 0; i < allMonths.length; i++) {
-            months.add(allMonths[i]);
-        }
-        ArrayAdapter<Month> monthArrayAdapter = new ArrayAdapter<Month>(
-                this, android.R.layout.simple_spinner_dropdown_item, months
-        );
-        ((Spinner)findViewById(R.id.monthSpinner)).setAdapter(monthArrayAdapter);
     }
 
     private void fillTask() {
@@ -109,5 +95,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 AlarmHelper.getInstance().start();
                 break;
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
     }
 }
