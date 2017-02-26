@@ -147,7 +147,7 @@ public class DBhandler extends SQLiteOpenHelper {
         values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
         values.put(KEY_DESCRIPTION, task.GetDescription());
 
-        return db.update(DATABASE_NAME, values, KEY_ID + " = ?",
+        return db.update(TABLE_TASKS, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(task.GetId())});
     }
 

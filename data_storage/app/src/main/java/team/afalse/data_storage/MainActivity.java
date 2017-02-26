@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -18,11 +19,13 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity
+        implements View.OnLongClickListener, AdapterView.OnItemClickListener, CompoundButton.OnCheckedChangeListener {
 
     private DBhandler db;
     private ListView taskList;
     private ArrayAdapter<Task> taskArrayAdapter;
+    private Task lastEditedTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         db = new DBhandler(this);
         db.init();
         taskList = (ListView)findViewById(R.id.allTasks);
+        taskList.setOnItemClickListener(this);
         ((FloatingActionButton)findViewById(R.id.menu_button)).setOnLongClickListener(this);
         ((CheckBox)findViewById(R.id.cb_countingUp)).setOnCheckedChangeListener(this);
         fillTask();
@@ -42,6 +46,24 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 this, android.R.layout.simple_spinner_dropdown_item, tasks
         );
         taskList.setAdapter(taskArrayAdapter);
+        setTaskColors(tasks);
+    }
+
+    private void setTaskColors(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            Task t  = tasks.get(i);
+            if (t.GetCompleted()) {
+                taskList.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.green));
+            } else if (isWithinLastDay(t.GetCompletionDate())) {
+
+            }
+        }
+    }
+
+    private boolean isWithinLastDay(String completionDate) {
+        boolean isWithinLastDay = false;
+
+        return isWithinLastDay;
     }
 
     public void showNewTaskMenu(View view) {
@@ -58,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         showNewTaskMenu(view);
     }
 
+    private void editTask() {
+        db.updateTask(lastEditedTask);
+    }
+
     private void makeNewTask() {
         String name = getEditTextString(R.id.taskName);
         String description = "";
@@ -71,9 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         taskArrayAdapter.notifyDataSetChanged();
     }
 
-    private void editTask() {
-
-    }
 
     private String getEditTextString(int id) {
         return ((EditText)findViewById(id)).getText().toString();
@@ -100,5 +123,18 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Task taskSelected = db.getAllTasks().get(position);
+        lastEditedTask = taskSelected;
+        setText(R.id.taskId, Integer.toString(taskSelected.GetId()));
+        setText(R.id.taskName, taskSelected.GetTitle());
+        showNewTaskMenu(null);
+    }
+
+    private void setText(int id, String text) {
+        ((EditText)findViewById(id)).setText(text);
     }
 }
