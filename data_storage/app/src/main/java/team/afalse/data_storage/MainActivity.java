@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -17,7 +19,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
 
     private DBhandler db;
     private ListView taskList;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         db.init();
         taskList = (ListView)findViewById(R.id.allTasks);
         ((FloatingActionButton)findViewById(R.id.menu_button)).setOnLongClickListener(this);
+        ((CheckBox)findViewById(R.id.cb_countingUp)).setOnCheckedChangeListener(this);
         EditText e1 = (EditText)findViewById(R.id.minutes);
         e1.setFilters(new InputFilter[]{new NumberFilter(0, 59)});
         EditText e2 = (EditText)findViewById(R.id.seconds);
@@ -100,5 +103,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 AlarmHelper.getInstance().start();
                 break;
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
     }
 }
