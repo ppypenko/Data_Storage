@@ -16,9 +16,10 @@ public class Task {
     private int id;
     private String completionDate;
     private boolean isCountingDown;
+    private boolean isPaused;
     public Task(){}
 
-    public Task(int id, String title, String description, String completionDate, int[] time, boolean completed, boolean isCountingDown){
+    public Task(int id, String title, String description, String completionDate, int[] time, boolean completed, boolean isCountingDown, boolean isPaused){
         this.id = id;
         this.title = title;
         this.description = description;
@@ -26,15 +27,17 @@ public class Task {
         this.time = time;
         this.completed = completed;
         this.isCountingDown = isCountingDown;
+        this.isPaused = isPaused;
     }
 
-    public Task( String title, String description, String completionDate, int[] time, boolean completed, boolean isCountingDown){
+    public Task( String title, String description, String completionDate, int[] time, boolean completed, boolean isCountingDown, boolean isPaused){
         this.title = title;
         this.description = description;
         this.completionDate = completionDate;
         this.time = time;
         this.completed = completed;
         this.isCountingDown = isCountingDown;
+        this.isPaused = isPaused;
     }
 
     public String GetTitle(){
@@ -95,6 +98,14 @@ public class Task {
 
     @Override
     public String toString() {
-        return title;
+        return title + " ( " + completionDate + " " + time[0] + ":" + time[1] + ":" + time[2] + " )";
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
 }
