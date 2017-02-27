@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:text="@string/allTasks"/>
 
-
         <ListView android:id="@+id/allTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -60,23 +59,61 @@
         <TextView
             android:text="@string/taskName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal" />
         <EditText android:id="@+id/taskName"
             android:layout_width="match_parent"
+            android:layout_margin="15sp"
             android:layout_height="wrap_content" />
-        <CheckBox android:id="@+id/cb_countingUp"
-            android:text="@string/countUp"
-            android:layout_width="match_parent"
+
+
+        <TextView
+            android:text="Description"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:layout_gravity="center_horizontal" />
+        <EditText android:id="@+id/taskDescription"
+            android:layout_width="match_parent"
+            android:layout_margin="15sp"
+            android:layout_height="wrap_content" />
         <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/timerInput"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <CheckBox android:id="@+id/paused"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Timer Paused" />
+            <CheckBox android:id="@+id/complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed"/>
+
+        </LinearLayout>
+        <TextView android:id="@+id/deadlineDate"
+            android:text="Deadline Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal" />
+        <Button android:id="@+id/taskCompletionDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:layout_margin="15sp"
+            android:onClick="selectDate"/>
+
+        <LinearLayout android:id="@+id/timerInput"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <TextView
-                android:text="Countdown Time: hrs, mins, secs"
+                android:text="Sound Alarm After"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <LinearLayout
@@ -107,27 +144,24 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:text="Task Description"
+        <CheckBox android:id="@+id/cb_countingUp"
+            android:text="@string/countUp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText android:id="@+id/taskDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="Task Date to Complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText android:id="@+id/taskCompletionDate"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"/>
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal" />
+
+
 
         <Button android:id="@+id/saveTask"
             android:text="@string/save"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:padding="16sp"
+            android:textAllCaps="false"
+            android:layout_margin="15sp"
             android:onClick="saveTask"/>
     </LinearLayout>
     <LinearLayout android:id="@+id/debugMenu"

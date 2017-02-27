@@ -29,6 +29,7 @@ public class DBhandler extends SQLiteOpenHelper {
     private static final String KEY_COMPLETED = "completed";
     private static final String KEY_COUNT_DOWN = "count_down";
     private static final String KEY_COMPLETION_DATE = "completion_date";
+    private static final String KEY_IS_PAUSED = "is_paused";
     private static final String KEY_DESCRIPTION = "description";
 
     public DBhandler(Context context) {
@@ -36,7 +37,7 @@ public class DBhandler extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        init();
     }
 
     public void init() {
@@ -45,13 +46,14 @@ public class DBhandler extends SQLiteOpenHelper {
                 + KEY_DESCRIPTION + " TEXT, " + KEY_HOURS + " INTEGER, "
                 + KEY_MINUTES + " INTEGER, " + KEY_SECONDS + " INTEGER, "
                 + KEY_COMPLETED + " NUMERIC, " + KEY_COUNT_DOWN + " NUMERIC, "
-                + KEY_COMPLETION_DATE + " TEXT )";
+                + KEY_COMPLETION_DATE + " TEXT, " + KEY_IS_PAUSED + " NUMERIC )";
         getWritableDatabase().execSQL(CREATE_CONTACTS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
+        init();
         onCreate(db);
     }
 
@@ -71,6 +73,7 @@ public class DBhandler extends SQLiteOpenHelper {
         values.put(KEY_COMPLETED, task.GetCompleted());
         values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
         values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
+        values.put(KEY_IS_PAUSED, task.isPaused());
 
         db.insertOrThrow(TABLE_TASKS, null, values);
         db.close();
@@ -81,7 +84,7 @@ public class DBhandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_TASKS, new String[]{KEY_ID,
                         KEY_TITLE, KEY_DESCRIPTION, KEY_HOURS, KEY_MINUTES, KEY_SECONDS,
-                        KEY_COMPLETED, KEY_COUNT_DOWN, KEY_COMPLETION_DATE }, KEY_ID + "=?",
+                        KEY_COMPLETED, KEY_COUNT_DOWN, KEY_COMPLETION_DATE, KEY_IS_PAUSED }, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null){
             cursor.moveToFirst();
@@ -90,8 +93,9 @@ public class DBhandler extends SQLiteOpenHelper {
         Task contact = new Task(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2), cursor.getString(8),
                 time, Boolean.parseBoolean(cursor.getString(6)),
-                Boolean.parseBoolean(cursor.getString(7)));
+                Boolean.parseBoolean(cursor.getString(7)), Boolean.parseBoolean(cursor.getString(9)));
 
+        cursor.close();
         return contact;
     }
 
@@ -116,13 +120,16 @@ public class DBhandler extends SQLiteOpenHelper {
                 task.SetTitle(cursor.getString(1));
                 task.SetDescription(cursor.getString(2));
                 task.SetTime(time);
-                task.SetCompleted(Boolean.parseBoolean(cursor.getString(4)));
-                task.SetIsCountingDown(Boolean.parseBoolean(cursor.getString(5)));
-                task.SetCompletionDate(cursor.getString(6));
+                task.SetCompleted(cursor.getString(6).equals("1") ? true : false);
+                task.SetIsCountingDown(cursor.getString(7).equals("1") ? true : false);
+                task.SetCompletionDate(cursor.getString(8));
+                task.setPaused(cursor.getString(9).equals("1") ? true : false);
 
                 taskList.add(task);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
         return taskList;
     }
 
@@ -146,14 +153,16 @@ public class DBhandler extends SQLiteOpenHelper {
         values.put(KEY_COUNT_DOWN, task.GetIsCountingDown());
         values.put(KEY_COMPLETION_DATE, task.GetCompletionDate());
         values.put(KEY_DESCRIPTION, task.GetDescription());
+        values.put(KEY_IS_PAUSED, task.isPaused());
 
-        return db.update(DATABASE_NAME, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(task.GetId())});
+        int rowsUpdated = db.update(TABLE_TASKS, values, KEY_ID + " = ?", new String[]{String.valueOf(task.GetId())});
+        System.out.println("Rows updated: " + rowsUpdated);
+        return rowsUpdated;
     }
 
     public void deleteTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(DATABASE_NAME, KEY_ID + " = ?",
+        db.delete(TABLE_TASKS, KEY_ID + " = ?",
                 new String[] { String.valueOf(task.GetId()) });
         db.close();
     }
