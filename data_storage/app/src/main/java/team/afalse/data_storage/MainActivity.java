@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         taskList.setOnItemClickListener(this);
         taskList.setOnItemLongClickListener(this);
         ((FloatingActionButton)findViewById(R.id.menu_button)).setOnLongClickListener(this);
-        ((CheckBox)findViewById(R.id.cb_countingUp)).setOnCheckedChangeListener(this);
+//        ((CheckBox)findViewById(R.id.cb_countingUp)).setOnCheckedChangeListener(this);
         ((CheckBox)findViewById(R.id.paused)).setOnCheckedChangeListener(this);
         ((CheckBox)findViewById(R.id.complete)).setOnCheckedChangeListener(this);
         EditText e1 = (EditText)findViewById(R.id.minutes);
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         ((EditText)findViewById(R.id.minutes)).setText("");
         ((EditText)findViewById(R.id.seconds)).setText("");
         ((Button)findViewById(R.id.taskCompletionDate)).setText(todaysDate);
-        ((CheckBox)findViewById(R.id.cb_countingUp)).setChecked(false);
+//        ((CheckBox)findViewById(R.id.cb_countingUp)).setChecked(false);
         ((CheckBox)findViewById(R.id.paused)).setChecked(false);
         ((CheckBox)findViewById(R.id.complete)).setChecked(false);
     }
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity
                 Integer.parseInt(getEditTextString(R.id.seconds))
         };
         boolean completed = ((CheckBox)findViewById(R.id.complete)).isChecked();
-        boolean isCountingDown = ((CheckBox)findViewById(R.id.cb_countingUp)).isChecked();
-        Task t = new Task(name, description, completionDate, time, completed, isCountingDown, false);
+//        boolean isCountingDown = ((CheckBox)findViewById(R.id.cb_countingUp)).isChecked();
+        Task t = new Task(name, description, completionDate, time, completed, false, false);
         db.addTask(t);
         fillTask();
         taskArrayAdapter.notifyDataSetChanged();
@@ -270,10 +270,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cb_countingUp:
-                findViewById(R.id.taskCompletionDate).setVisibility((isChecked ? View.GONE : View.VISIBLE));
-                findViewById(R.id.deadlineDate).setVisibility((isChecked ? View.GONE : View.VISIBLE));
-                break;
+//            case R.id.cb_countingUp:
+//                findViewById(R.id.taskCompletionDate).setVisibility((isChecked ? View.GONE : View.VISIBLE));
+//                findViewById(R.id.deadlineDate).setVisibility((isChecked ? View.GONE : View.VISIBLE));
+//                break;
             case R.id.paused:
 //                lastEditedTask.setPaused(isChecked);
 //                db.updateTask(lastEditedTask);

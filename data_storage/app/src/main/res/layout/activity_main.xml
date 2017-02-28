@@ -144,12 +144,12 @@
             </LinearLayout>
         </LinearLayout>
 
-        <CheckBox android:id="@+id/cb_countingUp"
-            android:text="@string/countUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="center_horizontal" />
+        <!--<CheckBox android:id="@+id/cb_countingUp"-->
+            <!--android:text="@string/countUp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="20sp"-->
+            <!--android:layout_gravity="center_horizontal" />-->
 
 
 
