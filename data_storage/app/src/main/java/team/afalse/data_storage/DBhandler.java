@@ -34,10 +34,11 @@ public class DBhandler extends SQLiteOpenHelper {
 
     public DBhandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        init();
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        init();
+        //init();
     }
 
     public void init() {
@@ -54,7 +55,7 @@ public class DBhandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
         init();
-        onCreate(db);
+        //onCreate(db);
     }
 
     public void drop() {

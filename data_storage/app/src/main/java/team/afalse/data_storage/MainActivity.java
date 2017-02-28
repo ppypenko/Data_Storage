@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new DBhandler(this);
-        db.init();
+        //db.init();
         taskList = (ListView)findViewById(R.id.allTasks);
         taskList.setOnItemClickListener(this);
         taskList.setOnItemLongClickListener(this);
